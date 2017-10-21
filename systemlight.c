@@ -1,5 +1,3 @@
-#include <stdio.h>
-#include <string.h>
 int main() {
 
   char input_file_name[128];
