@@ -1,3 +1,6 @@
+/*for(;michaelDouglas;)
+	printf("Never more I go sleep");
+*/
 #include <stdio.h>
 #include <string.h>
 int main() {
