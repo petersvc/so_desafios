@@ -10,7 +10,7 @@ int main() {
 
   char input_file_name[50] = "";
   char output_file_name[50] = "";
-  char fdd[50] = "";
+
   char write_1[50] = "Digite o nome do arquivo que será copiado: ";
   char write_2[70] = "Digite o nome do arquivo que receberá o conteúdo copiado: ";
 
@@ -28,11 +28,11 @@ int main() {
     exit(1);
   }
 
-
-  read(fd, fdd, sizeof(fd));
   int size = lseek(fd, 0, SEEK_END);
-  write(*fdd, &fd, size);
-
+  lseek(fd, 0, SEEK_SET);
+  char fdd[size];
+  read(fd, fdd, size);
+  write(fdd, fd, size);
   write(fd2, fdd, size);
 
   close(fd);
