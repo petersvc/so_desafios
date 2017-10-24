@@ -10,11 +10,15 @@
 
 int main() {
 
+  char input_file_name[128]= "";
+
+  read(0, input_file_name, 128);
+
   // OPEN
   // APPEND add o conteúdo escrito (WRITE) no final do arquivo
   // APPEND é "que nem" um +=
 
-  int fd = open("test.txt", O_WRONLY | O_APPEND);
+  int fd = open(input_file_name, O_WRONLY | O_CREAT | O_APPEND);
 
   // Testando se o arquivo existe, caso não existe, encerra o comando
 
@@ -27,9 +31,10 @@ int main() {
   // fd é o endereço do arquivo onde eu vou escrever
   // "hello world é o que vou escrever"
   // 13 é o tamanho da frase "hello world"
-  
-  write(fd, "Hello Worbd!\n", 13);
+
+  write(fd, "Hello World!\n", 13);
 
   close(fd);
   return 0;
+  
 }
