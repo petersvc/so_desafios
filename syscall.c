@@ -11,14 +11,21 @@
 int main() {
 
   char input_file_name[128]= "";
+  char output_file_name[128]= "";
+  char write_1[50] = "Digite o nome do arquivo que será copiado: ";
+  char write_2[70] = "Digite o nome do arquivo que receberá o conteúdo copiado: ";
 
+  write(1, write_1, sizeof(write_1));
   read(0, input_file_name, 128);
+
+  write(1, write_2, sizeof(write_2));
+  read(0, output_file_name, 128);
 
   // OPEN
   // APPEND add o conteúdo escrito (WRITE) no final do arquivo
   // APPEND é "que nem" um +=
 
-  int fd = open(input_file_name, O_WRONLY | O_CREAT | O_APPEND);
+  int fd = open(input_file_name, O_RDWR | O_CREAT | O_APPEND, S_IWRITE | S_IREAD);
 
   // Testando se o arquivo existe, caso não existe, encerra o comando
 
@@ -36,5 +43,5 @@ int main() {
 
   close(fd);
   return 0;
-  
+
 }
