@@ -1,43 +1,54 @@
-#include <stdio.h>
-//#include <string.h>
 #include <stdlib.h>
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <fcntl.h>
 #include <unistd.h>
 
-int main() {
+void main() {
 
-  char input_file_name[50] = "";
-  char output_file_name[50] = "";
+  char source[50], destination[50], buffer[1];
+  int fd, fd2, size;
 
-  char write_1[50] = "Digite o nome do arquivo que será copiado: ";
-  char write_2[70] = "Digite o nome do arquivo que receberá o conteúdo copiado: ";
+  write(1, "Digite o nome do arquivo fonte: ", 33);
+  size = read(0, source, 50);
+  source[size - 1] = '\0';
 
-  write(1, write_1, 50);
-  read(0, input_file_name, sizeof(input_file_name));
+  write(1, "Digite o nome do arquivo de destino: ", 38);
+  size = read(0, destination, 50);
+  destination[size - 1] = '\0';
 
-  write(1, write_2, 70);
-  read(0, output_file_name, sizeof(output_file_name));
+  fd = open(source, O_RDONLY);
 
-  int fd = open(input_file_name, O_RDWR | O_CREAT, 777);
-  int fd2 = open(output_file_name, O_RDWR | O_CREAT, 777);
-
-  if (fd == -1 || fd2 == -1){
-    write(0, "Failed to open.\n", 15);
+  if (fd < 0){
+    write(0, "\nPrograma abortado: o arquivo não existe.", 42);
     exit(1);
   }
 
-  int size = lseek(fd, 0, SEEK_END);
+  fd2 = open(destination, O_RDWR | O_CREAT | O_EXCL, S_IREAD | S_IWRITE);
+
+  if (fd2 < 0){
+    write(0, "\nPrograma abortado: o arquivo já existe", 41);
+    exit(1);
+  }
+
+  size = lseek(fd, 0, SEEK_END);
   lseek(fd, 0, SEEK_SET);
-  char fdd[size];
-  read(fd, fdd, size);
-  write(fdd, fd, size);
-  write(fd2, fdd, size);
+
+  buffer[size];
+
+  read(fd, buffer, size);
+
+  int buffer_written = write(fd2, buffer, size);
+  int fd2_buffer = lseek(fd2, 0, SEEK_END);
+
+  if (buffer_written == fd2_buffer) {
+    write(1, "\nA copia foi bem sucedida!\n", 26);
+  }
+  else {
+    write(1, "\nA copia foi mal sucedida!\n", 26);
+  }
 
   close(fd);
   close(fd2);
-
-  return 0;
 
 }
