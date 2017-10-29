@@ -3,11 +3,12 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 #include <unistd.h>
+#include <stdio.h>
 
-void main() {
+void main(){
 
-  char source[50], destination[50], buffer[1];
-  int fd, fd2, size;
+  char source[50], destination[50], buffer[256];
+  int fd, fd2, size, size2, flag = 0;
 
   write(1, "Digite o nome do arquivo fonte: ", 33);
   size = read(0, source, 50);
@@ -19,32 +20,32 @@ void main() {
 
   fd = open(source, O_RDONLY);
 
-  if (fd < 0){
+  if(fd < 0){
     write(0, "\nPrograma abortado: o arquivo não existe.", 42);
     exit(1);
   }
 
-  fd2 = open(destination, O_RDWR | O_CREAT | O_EXCL, S_IREAD | S_IWRITE);
+  fd2 = open(destination, O_RDWR | O_CREAT | O_EXCL, 777);
 
-  if (fd2 < 0){
+  if(fd2 < 0){
     write(0, "\nPrograma abortado: o arquivo já existe", 41);
     exit(1);
   }
 
+  do{
+    size = read(fd, buffer, 256);
+    size2 = write(fd2, buffer, size);
+    flag ++;
+  } while(size > 0);
+
   size = lseek(fd, 0, SEEK_END);
-  lseek(fd, 0, SEEK_SET);
+  size2 = lseek(fd2, 0, SEEK_END);
 
-  buffer[size];
-
-  read(fd, buffer, size);
-
-  int buffer_written = write(fd2, buffer, size);
-  int fd2_buffer = lseek(fd2, 0, SEEK_END);
-
-  if (buffer_written == fd2_buffer) {
+  if(size == size2){
     write(1, "\nA copia foi bem sucedida!\n", 26);
+    printf("%d", flag);
   }
-  else {
+  else{
     write(1, "\nA copia foi mal sucedida!\n", 26);
   }
 
