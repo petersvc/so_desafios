@@ -6,7 +6,7 @@
 
 void main(){
 
-  char source[50], destination[50], buffer[256];
+  char source[50], destination[50], buffer[64];
   int fd, fd2, size, size2;
 
   write(1, "Digite o nome do arquivo fonte: ", 33);
@@ -22,17 +22,16 @@ void main(){
   if(fd < 0){
     write(0, "\nPrograma abortado: o arquivo não existe.", 42);
     exit(1);
-  }
-
-  fd2 = open(destination, O_RDWR | O_CREAT | O_EXCL, 777);
-
-  if(fd2 < 0){
-    write(0, "\nPrograma abortado: o arquivo já existe", 41);
-    exit(1);
+  } else{
+      fd2 = open(destination, O_RDWR | O_CREAT | O_EXCL, 0777);
+      if(fd2 < 0){
+        write(0, "\nPrograma abortado: o arquivo já existe", 41);
+        exit(1);
+      }
   }
 
   do{
-    size = read(fd, buffer, 256);
+    size = read(fd, buffer, 64);
     size2 = write(fd2, buffer, size);
   } while(size > 0);
 
@@ -41,12 +40,9 @@ void main(){
 
   if(size == size2){
     write(1, "\nA copia foi bem sucedida!\n", 26);
-  }
-  else{
+  } else{
     write(1, "\nA copia foi mal sucedida!\n", 26);
-  }
-
-  close(fd);
-  close(fd2);
-
+    close(fd);
+    close(fd2);
+    }
 }
