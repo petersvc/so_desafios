@@ -3,12 +3,11 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 #include <unistd.h>
-#include <stdio.h>
 
 void main(){
 
   char source[50], destination[50], buffer[256];
-  int fd, fd2, size, size2, flag = 0;
+  int fd, fd2, size, size2;
 
   write(1, "Digite o nome do arquivo fonte: ", 33);
   size = read(0, source, 50);
@@ -35,7 +34,6 @@ void main(){
   do{
     size = read(fd, buffer, 256);
     size2 = write(fd2, buffer, size);
-    flag ++;
   } while(size > 0);
 
   size = lseek(fd, 0, SEEK_END);
@@ -43,7 +41,6 @@ void main(){
 
   if(size == size2){
     write(1, "\nA copia foi bem sucedida!\n", 26);
-    printf("%d", flag);
   }
   else{
     write(1, "\nA copia foi mal sucedida!\n", 26);
