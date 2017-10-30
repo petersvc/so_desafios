@@ -3,7 +3,7 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 #include <unistd.h>
-#include <stdio.h>
+
 void main(){
 
   char source[50], destination[50], buffer[64];
@@ -38,13 +38,13 @@ void main(){
   size = lseek(fd, SEEK_SET, SEEK_END);
   size2 = lseek(fd2, SEEK_SET, SEEK_END);
 
-  printf("%d e %d", size, size2);
-  
   if(size == size2){
     write(1, "\nA copia foi bem sucedida!\n", 26);
   } else{
     write(1, "\nA copia foi mal sucedida!\n", 26);
-    close(fd);
-    close(fd2);
     }
+
+  close(fd);
+  close(fd2);
+  
 }
