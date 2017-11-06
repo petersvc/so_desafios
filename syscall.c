@@ -19,6 +19,10 @@ void main(){
   destination[size_read - 1] = '\0'; // ...
 
   fd = open(source, O_RDONLY); // abre ("O_ = open") o arquivo ("source") com permissáo de apenas leitura ("RD = read; ONLY...").
+  
+  // "fd" Returns the file descriptor for the new file.
+  // The file descriptor returned is always the smallest integer greater than zero that is still available.
+  // If a negative value is returned, then there was an error opening the file.
 
   if(fd < 0){ // Testa se houve erro na abertura de "source". Quando a "open" falha, ela retorna "-1".
     write(0, "\nPrograma abortado: o arquivo não existe.", 42);
