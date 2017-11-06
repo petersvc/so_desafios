@@ -1,9 +1,9 @@
 //#include <stdio.h> // opcional pra usar printf e saber a qtde de dados no final.
 #include <stdlib.h> // Biblioteca da função exit().
-#include <unistd.h> // Biblioteca das funções write() e read().
-#include <sys/types.h> // open() - Compatibilidade.
-#include <sys/stat.h> // open()   Compatibilidade.
-#include <fcntl.h> // open().
+#include <unistd.h> // Biblioteca das syscalls write() e read().
+#include <fcntl.h> // ...open().
+#include <sys/types.h> // ...open() - Compatibilidade para funcionar em alguns unix.
+#include <sys/stat.h> // ...open() - Compatibilidade para funcionar em alguns unix.
 
 void main(){
 
@@ -38,7 +38,7 @@ void main(){
       fd2 = open(destination, O_CREAT | O_EXCL | O_WRONLY, 0777);
     
       if(fd2 < 0){ // Testa se houve erro..."destination"...
-        write(0, "\nPrograma abortado: o arquivo já existe", 41);
+        write(1, "\nPrograma abortado: o arquivo já existe", 41);
         exit(1);
       }
   }
@@ -52,7 +52,7 @@ void main(){
         exit(1);
     }
     
-  } while(size_read > 0); // Enquanto size é maior que zero, ha dados a serem copiados, quando não ha, "size" = 0 ou -1.
+  } while(size_read > 0); // Enquanto size é maior que zero, há dados a serem copiados, quando não há, "size" = 0.
   
   write(1, "\nA copia foi bem sucedida!\n", 26);
   
@@ -63,7 +63,7 @@ void main(){
     if(size_read == size_written){ // Testa se a qtde de bytes dos dois arquivos é a mesma.
       write(1, "\nA copia foi bem sucedida!\n", 26); // Caso sim, eles sao identicos e ocorreu tudo bem
     } else{
-      write(1, "\nA copia foi mal sucedida!\n\n", 26);
+      write(1, "\nA copia foi mal sucedida!\n\n", 28);
       }
 
     //printf("\n\nArquivo fonte = %d bytes\nArquivo de destino = %d bytes", size_read, size_written); // ver a qtd de bytes dos arquivos.
